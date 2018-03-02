@@ -32,12 +32,18 @@ class Note {
 class App {
   constructor() {
     console.log("👊🏼 The Constructor!");
-  
+    
     // HINT🤩
     // clicking the button should work
     // pressing the enter key should also work
-    // this.btnAdd = ???
-    // this.btnAdd.addEventListener("click", this.createNote.bind(this));
+    this.btnAdd = document.getElementById("btnAddNote");
+    this.btnAdd.addEventListener("click", function(){
+        let text = document.getElementById("txtAddNote");
+        console.log()
+        console.log("Klik");
+        let m1 = new Note("The Avengers");
+        console.log(m1.title);
+    }); //this.createNote.bind(this));
     // this.loadNotesFromStorage();
   }
   
@@ -63,3 +69,6 @@ class App {
 }
 
 let app = new App();
+
+console.log("test");
+
