@@ -38,8 +38,8 @@ class App {
     // pressing the enter key should also work
     this.btnAdd = document.getElementById("btnAddNote");
     this.btnAdd.addEventListener("click", function(){
-        let text = document.getElementById("txtAddNote");
-        console.log()
+        let text = document.getElementById("txtAddNote").value;
+        console.log(text);
         console.log("Klik");
         let m1 = new Note("The Avengers");
         console.log(m1.title);
