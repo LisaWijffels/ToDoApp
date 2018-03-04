@@ -1,3 +1,5 @@
+let i = 0;
+
 class Note {
     
   constructor(title) {
@@ -8,27 +10,30 @@ class Note {
   createElement(title){
     let newNote = document.createElement('div');
     newNote.classList.add("card");
+      
     let newTitle = document.createElement("p");
     newTitle.innerHTML = title + "<br>";
+      
     let btnRemove = document.createElement('a');
     btnRemove.classList.add("card-remove");
     btnRemove.href = "#";
     btnRemove.innerHTML = "Remove";
       
-    newNote.appendChild(newTitle);
-    newNote.appendChild(btnRemove);
     
-    btnRemove.addEventListener('click', this.remove.bind(newNote));
+    
+    btnRemove.addEventListener('click', this.remove.bind(newTitle, title));
       
-    this.add(newNote);
-    this.saveToStorage(title);
+    this.add(newNote, newTitle, btnRemove);
+    this.saveToStorage(this.title);
     
   }
   
-  add(newNote){
+  add(newNote, newTitle, btnRemove){
     // HINT🤩
     // this function should append the note to the screen somehow
       let divNotes = document.querySelector(".notes");
+      newNote.appendChild(newTitle);
+      newNote.appendChild(btnRemove);
       divNotes.appendChild(newNote);
       
   }
@@ -36,10 +41,7 @@ class Note {
 
     
   saveToStorage(title){
-      if(localStorage.clickcount){
-          console.log("if");
-          console.log("title"+title);
-          console.log("clickcount"+localStorage.clickcount);
+      /*if(localStorage.clickcount){
           localStorage.clickcount = parseInt(localStorage.clickcount) +1;
           localStorage.setItem("note"+localStorage.clickcount, title);
           console.log("taking"+localStorage.getItem("note"+localStorage.clickcount));
@@ -48,18 +50,14 @@ class Note {
           console.log("else");
           localStorage.clickcount = 1;
           localStorage.setItem("note"+localStorage.clickcount, title);
-          console.log("taking"+localStorage.getItem("note"+localStorage.clickcount));
-      }
+          console.log("saving"+localStorage.getItem("note"+localStorage.clickcount));
+      }*/
+      localStorage.setItem("note"+i, title);
+      i++;
+      
       
       
       //localStorage.clear();
-      
-      /*let sNotes.push(title);
-      for(let i = 1; i<sNotes.length; i++){
-          localStorage.setItem("note"+i, title);
-      }*/
-      
-            
       
         
     // HINT🤩
@@ -67,10 +65,32 @@ class Note {
     // if you want to store arrays, look at JSON.parse and JSON.stringify
   }
   
-  remove(newNote){
+  remove(newTitle, title){
     // HINT🤩 the meaning of 'this' was set by bind() in the createElement function
     // in this function, 'this' will refer to the current note element
-      this.parentNode.removeChild(this);
+      //this.parentNode.removeChild(this);
+      
+      
+      //console.log(localStorage.getItem("note"+i));
+      //localStorage.removeItem("note"+i);
+      
+      /*for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+          console.log( localStorage.key( i ) );
+      }*/
+      console.log("title "+newTitle);
+      
+      for(let i=0; i<localStorage.length; i++) {
+        let key = localStorage.key(i);
+        let value = localStorage[key];
+        console.log("key "+localStorage[key]);
+        if(value == newTitle){
+            console.log(key + " => " + value);
+            localStorage.removeItem(key);
+        }
+      }
+      this.parentNode.parentNode.removeChild(this.parentNode);
+            
+      
       
   } 
 }
@@ -81,7 +101,7 @@ class App {
     // pressing the enter key should also work
     this.btnAdd = document.getElementById("btnAddNote");
     this.btnAdd.addEventListener("click", this.createNote.bind(this));
-    this.loadNotesFromStorage();
+    
   }
   
   loadNotesFromStorage() {
@@ -89,24 +109,20 @@ class App {
     // load all notes from storage here and add them to the screen
     // something like note.add() in a loop would be nice
       let divNotes = document.querySelector(".notes");
-      
-      if(localStorage.clickcount){
-          for(let i = 1; i<=localStorage.clickcount; i++){
-              let newDiv = document.createElement('div');
-              newDiv.classList.add("card");
-              newDiv.innerHTML = localStorage.getItem("note"+i);
-              console.log(localStorage.getItem("note"+i));
-              divNotes.appendChild(newDiv);
-              let btnRemove = document.createElement('a');
-              btnRemove.classList.add("card-remove");
-              btnRemove.href = "#";
-              btnRemove.innerHTML = "Remove";
-              newDiv.appendChild(btnRemove);
-          }
+      for(let i = 0; i< localStorage.length; i++){
+          console.log("coming through "+i);
+          let thatNote = localStorage.getItem("note"+i);
+           if(thatNote !== null){
+               console.log("Coming through again "+i);
+                let m1 = new Note(thatNote);
+               
+            }
       }
-    
       
+      console.log("Storage length "+localStorage.length);
       
+              
+   
       
   }
    
@@ -129,5 +145,5 @@ class App {
 }
 
 let app = new App();
-
+app.loadNotesFromStorage();
 
