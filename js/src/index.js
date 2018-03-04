@@ -20,7 +20,7 @@ class Note {
     btnRemove.addEventListener('click', this.remove.bind(newNote));
       
     this.add(newNote);
-    this.saveToStorage(newNote);
+    this.saveToStorage(title);
     
   }
   
@@ -29,12 +29,14 @@ class Note {
     // this function should append the note to the screen somehow
       let divNotes = document.querySelector(".notes");
       divNotes.appendChild(newNote);
+      
   }
   
-  saveToStorage(newNote){
-      console.log("this is a new note "+newNote);
-      localStorage.setItem("note", newNote);
-      console.log("This is in storage "+localStorage.getItem("note"));
+  saveToStorage(title){
+        localStorage.setItem("test1", title);
+        localStorage.testcount = 2;
+      
+        
     // HINT🤩
     // localStorage only supports strings, not arrays
     // if you want to store arrays, look at JSON.parse and JSON.stringify
@@ -54,20 +56,26 @@ class App {
     // pressing the enter key should also work
     this.btnAdd = document.getElementById("btnAddNote");
     this.btnAdd.addEventListener("click", this.createNote.bind(this));
-    // this.loadNotesFromStorage();
+    this.loadNotesFromStorage();
   }
   
   loadNotesFromStorage() {
     // HINT🤩
     // load all notes from storage here and add them to the screen
     // something like note.add() in a loop would be nice
+      let divNotes = document.querySelector(".notes");
+      let newDiv = document.createElement('div');
+      newDiv.classList.add("card");
+      newDiv.innerHTML = localStorage.test1 + localStorage.testcount;
+      divNotes.appendChild(newDiv);
+      
   }
    
   createNote(e){
     // this function should create a new note by using the Note() class
     let text = document.getElementById("txtAddNote").value;
     let m1 = new Note(text);
-    console.log("This is a note "+m1.title);
+    //console.log("This is a note "+m1.title);
     
     // HINT🤩
     // note.add();
