@@ -1,37 +1,50 @@
 class Note {
   constructor(title) {
     this.title = title;
-    // HINT🤩 this.element = this.createElement(title);
     this.createElement(title);
   }
   
   createElement(title){
     let newNote = document.createElement('div');
     newNote.classList.add("card");
-    let newTitle = document.createTextNode(title);
-    let divNotes = document.querySelector(".notes");
-    console.log(divNotes);
+    let newTitle = document.createElement("p");
+    newTitle.innerHTML = title + "<br>";
+    let btnRemove = document.createElement('a');
+    btnRemove.classList.add("card-remove");
+    btnRemove.href = "#";
+    btnRemove.innerHTML = "Remove";
+      
     newNote.appendChild(newTitle);
-    divNotes.appendChild(newNote);
-    // HINT🤩 a.addEventListener('click', this.remove.bind(newNote));
+    newNote.appendChild(btnRemove);
     
-    return newNote;
+    btnRemove.addEventListener('click', this.remove.bind(newNote));
+      
+    this.add(newNote);
+    this.saveToStorage(newNote);
+    
   }
   
-  add(){
+  add(newNote){
     // HINT🤩
     // this function should append the note to the screen somehow
+      let divNotes = document.querySelector(".notes");
+      divNotes.appendChild(newNote);
   }
   
-  saveToStorage(){
+  saveToStorage(newNote){
+      console.log("this is a new note "+newNote);
+      localStorage.setItem("note", newNote);
+      console.log("This is in storage "+localStorage.getItem("note"));
     // HINT🤩
     // localStorage only supports strings, not arrays
     // if you want to store arrays, look at JSON.parse and JSON.stringify
   }
   
-  remove(){
+  remove(newNote){
     // HINT🤩 the meaning of 'this' was set by bind() in the createElement function
     // in this function, 'this' will refer to the current note element
+      this.parentNode.removeChild(this);
+      
   } 
 }
 
