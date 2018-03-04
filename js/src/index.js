@@ -1,4 +1,5 @@
 class Note {
+    
   constructor(title) {
     this.title = title;
     this.createElement(title);
@@ -31,10 +32,34 @@ class Note {
       divNotes.appendChild(newNote);
       
   }
-  
+    
+
+    
   saveToStorage(title){
-        localStorage.setItem("test1", title);
-        localStorage.testcount = 2;
+      if(localStorage.clickcount){
+          console.log("if");
+          console.log("title"+title);
+          console.log("clickcount"+localStorage.clickcount);
+          localStorage.clickcount = parseInt(localStorage.clickcount) +1;
+          localStorage.setItem("note"+localStorage.clickcount, title);
+          console.log("taking"+localStorage.getItem("note"+localStorage.clickcount));
+          
+      } else {
+          console.log("else");
+          localStorage.clickcount = 1;
+          localStorage.setItem("note"+localStorage.clickcount, title);
+          console.log("taking"+localStorage.getItem("note"+localStorage.clickcount));
+      }
+      
+      
+      //localStorage.clear();
+      
+      /*let sNotes.push(title);
+      for(let i = 1; i<sNotes.length; i++){
+          localStorage.setItem("note"+i, title);
+      }*/
+      
+            
       
         
     // HINT🤩
@@ -64,10 +89,24 @@ class App {
     // load all notes from storage here and add them to the screen
     // something like note.add() in a loop would be nice
       let divNotes = document.querySelector(".notes");
-      let newDiv = document.createElement('div');
-      newDiv.classList.add("card");
-      newDiv.innerHTML = localStorage.test1 + localStorage.testcount;
-      divNotes.appendChild(newDiv);
+      
+      if(localStorage.clickcount){
+          for(let i = 1; i<=localStorage.clickcount; i++){
+              let newDiv = document.createElement('div');
+              newDiv.classList.add("card");
+              newDiv.innerHTML = localStorage.getItem("note"+i);
+              console.log(localStorage.getItem("note"+i));
+              divNotes.appendChild(newDiv);
+              let btnRemove = document.createElement('a');
+              btnRemove.classList.add("card-remove");
+              btnRemove.href = "#";
+              btnRemove.innerHTML = "Remove";
+              newDiv.appendChild(btnRemove);
+          }
+      }
+    
+      
+      
       
   }
    
@@ -91,5 +130,4 @@ class App {
 
 let app = new App();
 
-console.log("test");
 
