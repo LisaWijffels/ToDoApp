@@ -119,11 +119,13 @@ class App {
     this.loadNotesFromStorage();
     this.btnAdd = document.getElementById("btnAddNote");
     this.btnAdd.addEventListener("click", this.createNote.bind(this) );
+    let submit = this.btnAdd;
     this.btnAdd.addEventListener("click", this.reset.bind(this) );
     
-    window.addEventListener("keydown", function(){
+    window.addEventListener("keydown", function(e){
         if(window.event.keyCode=='13'){
-            btnAdd.click();
+            e.preventDefault();
+            submit.click();
         }
     });
       
