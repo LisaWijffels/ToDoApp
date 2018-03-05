@@ -1,4 +1,4 @@
-let i = 0;
+let row = [];
 
 class Note {
     
@@ -52,8 +52,17 @@ class Note {
           localStorage.setItem("note"+localStorage.clickcount, title);
           console.log("saving"+localStorage.getItem("note"+localStorage.clickcount));
       }*/
-      localStorage.setItem("note"+i, title);
-      i++;
+      row.push(title);
+      
+      for(let i = 0; i<row.length; i++){
+          localStorage.setItem(i, row[i]);
+          console.log("Saving "+localStorage.getItem(i)+" on "+i);
+      }
+      
+      
+      
+      //i++;
+      //console.log("i value "+i);
       
       
       
@@ -82,10 +91,17 @@ class Note {
       for(let i=0; i<localStorage.length; i++) {
         let key = localStorage.key(i);
         let value = localStorage[key];
-        console.log("key "+localStorage[key]);
-        if(value == newTitle){
+        console.log("key "+localStorage[key]+" value "+value);
+        if(value === newTitle){
             console.log(key + " => " + value);
             localStorage.removeItem(key);
+            row.splice(i, 1);
+            console.log("i value "+i);
+            localStorage.clear();
+            for(let i = 0; i<row.length; i++){
+                localStorage.setItem(i, row[i]);
+                console.log("Saving "+localStorage.getItem(i)+" on "+i);
+            }
         }
       }
       this.parentNode.parentNode.removeChild(this.parentNode);
@@ -97,11 +113,24 @@ class Note {
 
 class App {
   constructor() {
+    
     // clicking the button should work
     // pressing the enter key should also work
+    this.loadNotesFromStorage();
     this.btnAdd = document.getElementById("btnAddNote");
-    this.btnAdd.addEventListener("click", this.createNote.bind(this));
+    this.btnAdd.addEventListener("click", this.createNote.bind(this) );
+    this.btnAdd.addEventListener("click", this.reset.bind(this) );
     
+    window.addEventListener("keydown", function(){
+        if(window.event.keyCode=='13'){
+            btnAdd.click();
+        }
+    });
+      
+    for(let i = 0; i< localStorage.length; i++){
+          console.log("Found "+localStorage.getItem(i)+" on "+i);
+        
+    }
   }
   
   loadNotesFromStorage() {
@@ -110,14 +139,16 @@ class App {
     // something like note.add() in a loop would be nice
       let divNotes = document.querySelector(".notes");
       for(let i = 0; i< localStorage.length; i++){
-          console.log("coming through "+i);
-          let thatNote = localStorage.getItem("note"+i);
-           if(thatNote !== null){
-               console.log("Coming through again "+i);
-                let m1 = new Note(thatNote);
-               
-            }
+          let thatNote = localStorage.getItem(i);
+          if(thatNote !== null){
+              //row.push(thatNote);
+              console.log(thatNote+" found");
+              let m1 = new Note(thatNote);
+              
+          }
       }
+      
+      
       
       console.log("Storage length "+localStorage.length);
       
@@ -139,11 +170,12 @@ class App {
   }
   
   reset(){
-    // this function should reset the form 
+    // this function should reset the form
+      document.getElementById("form").reset();
   }
   
 }
 
 let app = new App();
-app.loadNotesFromStorage();
 
+//localStorage.clear();
